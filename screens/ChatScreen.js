@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -9,74 +9,94 @@ import {
 } from "react-native";
 import CustomChatHeader from "./CustomChatHeader";
 import { Ionicons } from "@expo/vector-icons";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { Avatar, Divider } from "react-native-elements";
+import firebase from "firebase/app";
 
 const ChatScreen = ({ route, navigation }) => {
   const room = route.params;
+
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      message: "from the account user bigmo",
-      email: "mmody@gmail.com",
-      displayName: "bigmo",
-    },
-    {
-      id: 2,
-      message: "sent by carliey",
-      email: "mdcarliey@gmail.com",
-      displayName: "carliey",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const totalMessages = messages.length > 0 ? messages.length +" messages" : messages.length +" message";
+  const scrollviewRef = useRef();
 
   useLayoutEffect(() => {
     // set header options
     navigation.setOptions({
-      headerTitle: () => <CustomChatHeader room={room} />,
+      headerTitle: () => <CustomChatHeader room={room} totalMessages={totalMessages}/>,
     });
-  }, []);
+  }, [navigation, messages]);
+
+  useEffect(()=>{
+    //fetch messages
+    const unsubscribe = db.collection("messages")
+    .where("room", "==", room.title)
+    .orderBy("timestamp")
+    .onSnapshot((querySnapshot)=>{
+      setMessages(querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data({serverTimestamps:"estimate"}),
+      })
+      ))
+    })
+    return unsubscribe;
+  },[route]);
+
+  alert("done");
 
   const handleSend = () => {
     Keyboard.dismiss();
-    const message = {
-      id: Math.random() * 10,
+    db.collection("messages")
+    .add({
       email: auth.currentUser.email,
       displayName: auth.currentUser.displayName,
       message: text,
-      timestamp: Date.now(),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp() ,
       displayPhoto: auth.currentUser.photoURL,
-    };
-
-    setMessages([...messages, message]);
+      room: room.title,
+      userId: auth.currentUser.uid
+    })
+    .then()
+    .catch((error)=>{
+      console.log(error);
+    })
+    setText("");
   };
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        ref={scrollviewRef}
+        onContentSizeChange={()=> scrollviewRef.current.scrollToEnd({ animated: true})}
+      >
         {messages.map((message) =>
-          message.email === auth.currentUser.email ? (
+          message.data.email === auth.currentUser.email ? (
             <View key={message.id} style={styles.senderContainer}>
               <View style={styles.senderMessageContainer}>
-                <Text style={styles.senderUsername}>{message.displayName}</Text>
+                <Text style={styles.senderUsername}>{message.data.displayName}</Text>
                 <Divider />
-                <Text style={styles.senderMessageText}>{message.message}</Text>
-                <Text style={styles.senderMessageTime}>12:30</Text>
+                <Text style={styles.senderMessageText}>{message.data.message}</Text>
+                <Text style={styles.senderMessageTime}>
+                  {new Date(message.data.timestamp.seconds * 1000).toLocaleString()}
+                </Text>
               </View>
-              <Avatar rounded source={{ uri: "blsj" }} size={28} />
+              <Avatar rounded source={{ uri: message.data.displayPhoto }} size={28} />
             </View>
           ) : (
             <View key={message.id} style={styles.receiverContainer}>
-              <Avatar rounded source={{ uri: "blsj" }} size={28} />
+              <Avatar rounded source={{ uri: message.data.displayPhoto }} size={28} />
               <View style={styles.receiverMessageContainer}>
                 <Text style={styles.receiverUsername}>
-                  {message.displayName}
+                  {message.data.displayName}
                 </Text>
                 <Divider />
                 <Text style={styles.receiverMessageText}>
-                  {message.message}
+                  {message.data.message}
                 </Text>
-                <Text style={styles.receiverMessageTime}>12:30</Text>
+                <Text style={styles.receiverMessageTime}>
+                  {new Date(message.data.timestamp.seconds * 1000).toLocaleString()}
+                </Text>
               </View>
             </View>
           )
@@ -87,6 +107,8 @@ const ChatScreen = ({ route, navigation }) => {
           placeholder="Enter message"
           onChangeText={(text) => setText(text)}
           style={styles.input}
+          onSubmitEditing={handleSend}
+          value={text}
         />
         <Ionicons name="send" color="blue" size={24} onPress={handleSend} />
       </View>

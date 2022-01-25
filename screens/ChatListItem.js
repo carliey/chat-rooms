@@ -6,8 +6,6 @@ import { db } from "../firebase";
 const ChatListItem = ({ navigation, keyword }) => {
   const [chatrooms, setChatrooms] = useState([]);
 
-  console.log(keyword);
-
   useEffect(() => {
     //to implement the searching functionality
     if(keyword){

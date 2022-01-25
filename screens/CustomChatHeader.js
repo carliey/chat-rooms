@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const CustomChatHeader = ({ room }) => {
+const CustomChatHeader = ({ room, totalMessages }) => {
   return (
     <View style={styles.headerContainer}>
       <Avatar
@@ -15,7 +15,7 @@ const CustomChatHeader = ({ room }) => {
       />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{room.name}</Text>
-        <Text style={styles.subtitle}>amina233, hassan43 and 45 others</Text>
+        <Text style={styles.subtitle}>{totalMessages}</Text>
       </View>
       <MaterialCommunityIcons
         name="dots-vertical"
