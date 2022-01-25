@@ -8,6 +8,8 @@ import ChatRooms from "../screens/ChatRooms";
 import Profile from "../screens/Profile";
 import ChatScreen from "../screens/ChatScreen";
 import CreateChat from "../screens/CreateChat";
+import SearchResult from "../screens/SearchResult";
+
 const Stack = createStackNavigator();
 const StackNav = () => {
   return (
@@ -19,6 +21,7 @@ const StackNav = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="chat" component={ChatScreen} />
         <Stack.Screen name="Create Chat" component={CreateChat} />
+        <Stack.Screen name="search-result" component={SearchResult}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

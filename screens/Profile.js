@@ -137,7 +137,7 @@ const Profile = () => {
         status: statusText,
       })
       .then(() => {
-        console.log("Document successfully written!");
+        // console.log("Document successfully written!");
         setStatus(statusText);
         setStatusText("");
       })

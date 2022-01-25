@@ -20,6 +20,11 @@ const CustomHeader = ({ navigation }) => {
       });
   };
 
+  const handleSearch =()=>{
+    
+    navigation.navigate("search-result", searchKeyword);
+  }
+
   //conditional return of searchbar or header
   return openSearch ? (
     <View style={styles.searchBarContainer}>
@@ -31,8 +36,9 @@ const CustomHeader = ({ navigation }) => {
       />
       <TextInput
         style={styles.searchInput}
-        placeholder="enter text"
+        placeholder="Room name"
         onChangeText={setSearchKeyword}
+        onSubmitEditing={handleSearch}
         value={searchKeyword}
       ></TextInput>
       <Ionicons

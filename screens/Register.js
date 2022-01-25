@@ -20,7 +20,7 @@ const Register = () => {
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(error.message);
+        console.log(error.message);
       });
   };
   return (
@@ -52,13 +52,6 @@ const Register = () => {
               onChangeText={handleChange("username")}
               onBlur={handleBlur("username")}
               value={values.username}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Enter photo"
-              onChangeText={handleChange("photourl")}
-              onBlur={handleBlur("photo")}
-              value={values.photoUrl}
               style={styles.input}
             />
             <TouchableOpacity style={styles.button}>

@@ -3,16 +3,30 @@ import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Badge, ListItem } from "react-native-elements/";
 import { db } from "../firebase";
 
-const ChatListItem = ({ navigation }) => {
+const ChatListItem = ({ navigation, keyword }) => {
   const [chatrooms, setChatrooms] = useState([]);
 
+  console.log(keyword);
+
   useEffect(() => {
-    db.collection("rooms")
-      .get()
-      .then((snapshot) => {
-        setChatrooms(snapshot.docs.map((item) => item.data()));
-      })
-      .catch((error) => console.log(error));
+    //to implement the searching functionality
+    if(keyword){
+        db.collection("rooms")
+        .where("title", "==", keyword)
+        .get()
+        .then((snapshot) => {
+          setChatrooms(snapshot.docs.map((item) => item.data()));
+        })
+        .catch((error) => console.log(error));
+    } else{
+        db.collection("rooms")
+        .get()
+        .then((snapshot) => {
+          setChatrooms(snapshot.docs.map((item) => item.data()));
+        })
+        .catch((error) => console.log(error));
+    }
+    
   }, []);
 
   return chatrooms.length > 0 ? (
