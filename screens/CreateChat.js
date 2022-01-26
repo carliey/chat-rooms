@@ -10,13 +10,13 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { auth, db, imagesRef } from "../firebase";
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const CreateChat = ({ navigation }) => {
   const [chatName, setChatName] = useState("");
   const [about, setAbout] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [image, setImage] = useState("");
-
   const pickImage = async () => {
     //pic image via image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -25,7 +25,6 @@ const CreateChat = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.cancelled) {
       //handle image picked
       setImageUrl(result.uri);
@@ -61,7 +60,7 @@ const CreateChat = ({ navigation }) => {
       .put(blob)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
-          console.log("file available at download", downloadURL);
+          //console.log("file available at download", downloadURL);
           setImage(downloadURL);
         });
       });
@@ -77,7 +76,8 @@ const CreateChat = ({ navigation }) => {
           const addSuccess = await db.collection("rooms").doc(chatName).set({
             title: chatName,
             about: about,
-            createdBy: auth.currentUser.uid,
+            creatorId: auth.currentUser.uid,
+            creatorName: auth.currentUser.displayName,
             displayPhoto: image,
           });
           navigation.replace("Chat Rooms");
@@ -85,7 +85,8 @@ const CreateChat = ({ navigation }) => {
           const addSuccess = await db.collection("rooms").doc(chatName).set({
             title: chatName,
             about: about,
-            createdBy: auth.currentUser.uid,
+            creatorId: auth.currentUser.uid,
+            creatorName: auth.currentUser.displayName,          
           });
           navigation.replace("Chat Rooms");
         }
@@ -112,9 +113,14 @@ const CreateChat = ({ navigation }) => {
           style={styles.input}
           onChangeText={(text) => setAbout(text)}
         />
-        <TouchableOpacity onPress={pickImage}>
-          <Text>upload Photo</Text>
-        </TouchableOpacity>
+        <MaterialIcons 
+          name="add-a-photo" 
+          size={45} 
+          color="black"
+          onPress={pickImage}
+          style={styles.imageUpload}
+        />
+        <Text style={{textAlign:"center", marginBottom:5, color:"green"}}>{imageUrl?"Image Selected":""}</Text>
         <Button title="Create" onPress={handleSubmit} />
       </View>
     </View>
@@ -137,4 +143,8 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     width: 300,
   },
+  imageUpload:{
+    alignSelf:"center",
+    marginBottom: 10
+  }
 });

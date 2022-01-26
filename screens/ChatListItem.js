@@ -18,11 +18,9 @@ const ChatListItem = ({ navigation, keyword }) => {
         .catch((error) => console.log(error));
     } else{
       db.collection("rooms")
-        .get()
-        .then((snapshot) => {
-          setChatrooms(snapshot.docs.map((item) => item.data()));
-        })
-        .catch((error) => console.log(error));
+      .onSnapshot((querySnapshot)=>{
+        setChatrooms(querySnapshot.docs.map((item) => item.data()));
+      })
     }
   }, []);
 
@@ -38,12 +36,11 @@ const ChatListItem = ({ navigation, keyword }) => {
           <ListItem.Content>
             <ListItem.Title>{l.title}</ListItem.Title>
             <ListItem.Subtitle>
-              last message should be dynamic
+              Created By: {l.creatorName}
             </ListItem.Subtitle>
           </ListItem.Content>
           <View style={styles.badgeContainer}>
-            <Text style={styles.time}>12:12</Text>
-            <Badge value="99+" status="error" />
+            {/* <Badge value="99+" status="error" /> */}
           </View>
         </ListItem>
       ))}

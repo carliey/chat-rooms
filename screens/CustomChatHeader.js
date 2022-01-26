@@ -9,12 +9,11 @@ const CustomChatHeader = ({ room, totalMessages }) => {
       <Avatar
         rounded
         source={{
-          uri:
-            "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+          uri:room.displayPhoto,
         }}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{room.name}</Text>
+        <Text style={styles.title}>{room.title}</Text>
         <Text style={styles.subtitle}>{totalMessages}</Text>
       </View>
       <MaterialCommunityIcons

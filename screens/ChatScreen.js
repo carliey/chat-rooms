@@ -15,7 +15,6 @@ import firebase from "firebase/app";
 
 const ChatScreen = ({ route, navigation }) => {
   const room = route.params;
-
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const totalMessages = messages.length > 0 ? messages.length +" messages" : messages.length +" message";
