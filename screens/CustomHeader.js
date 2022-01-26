@@ -5,6 +5,7 @@ import { Avatar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../firebase";
 
+
 const CustomHeader = ({ navigation }) => {
   const [openSearch, setOpenSearch] = useState(false); // searchbar
   const [searchKeyword, setSearchKeyword] = useState("");

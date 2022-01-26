@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
   View,
+  Text
 } from "react-native";
 import { auth } from "../firebase";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+  const [errMessage, setErrMessage] = useState(null);
 
   //check for user
   useEffect(() => {
@@ -33,9 +35,7 @@ const Login = ({ navigation }) => {
         // ...
       })
       .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
+        setErrMessage(error.message)
       });
   }
 
@@ -54,6 +54,16 @@ const Login = ({ navigation }) => {
         onChangeText={(val) => setpassword(val)}
         secureTextEntry
       />
+      {errMessage &&
+      <>
+        <Text>{errMessage}</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate("sendResetPassword")}>
+            <Text style={{textDecorationLine:"underline", color:'maroon', fontWeight:"bold"}}>Reset Password</Text>
+        </TouchableOpacity> 
+      </>
+      }
+        
+      
       <TouchableOpacity style={styles.button}>
         <Button title="Sign in" onPress={handleSubmit} />
       </TouchableOpacity>

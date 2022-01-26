@@ -7,6 +7,7 @@ import {
   Text,
   TouchableHighlight,
   Button,
+  ToastAndroid
 } from "react-native";
 import { Avatar, Divider, ListItem } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
@@ -24,6 +25,7 @@ const Profile = () => {
   const [status, setStatus] = useState("");
   const [display, setDisplay] = useState("none");
   const [displayStatus, setDisplayStatus] = useState("none");
+  const [passwordErr, setPasswordErr] = useState("");
 
   useEffect(() => {
     // get status text from database
@@ -123,7 +125,23 @@ const Profile = () => {
 
   //update profile
   const updateProfile = () => {
-    console.log(user.displayName);
+  if(password !== confirmPassword){
+    setPasswordErr("passwords do not match");
+  } else {
+    const newPassword = password;
+      user.updatePassword(newPassword).then(() => {
+          ToastAndroid.showWithGravity(
+            "Password Changed Successfully",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          );
+          setDisplay("none");
+          setPassword("");
+          setConfirmPassword("");
+      }).catch((error) => {
+        setPasswordErr(error.message)
+      });
+  }
   };
 
   //update status
@@ -208,6 +226,7 @@ const Profile = () => {
             value={confirmPassword}
             secureTextEntry
           />
+          <Text style={{fontSize:12, color:"red"}}>{passwordErr}</Text>
           <Button
             onPress={updateProfile}
             style={styles.button}
