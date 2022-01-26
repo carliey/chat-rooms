@@ -9,7 +9,7 @@ const ChatListItem = ({ navigation, keyword }) => {
   useEffect(() => {
     //to implement the searching functionality
     if(keyword){
-        db.collection("rooms")
+      db.collection("rooms")
         .where("title", "==", keyword)
         .get()
         .then((snapshot) => {
@@ -17,14 +17,13 @@ const ChatListItem = ({ navigation, keyword }) => {
         })
         .catch((error) => console.log(error));
     } else{
-        db.collection("rooms")
+      db.collection("rooms")
         .get()
         .then((snapshot) => {
           setChatrooms(snapshot.docs.map((item) => item.data()));
         })
         .catch((error) => console.log(error));
     }
-    
   }, []);
 
   return chatrooms.length > 0 ? (

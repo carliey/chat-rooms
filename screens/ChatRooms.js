@@ -11,21 +11,23 @@ const ChatRooms = ({ navigation }) => {
 
   useEffect(() => {
     //check login status
-    auth.onAuthStateChanged((user) => {
+   const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         navigation.replace("Login");
       }
       setUser(user);
     });
+    return unsubscribe
   }, []);
 
   useLayoutEffect(() => {
     //set header options
-    navigation.setOptions({
+    const unsubscribe = navigation.setOptions({
       headerTitle: () => <CustomHeader navigation={navigation} />,
-    }),
-      [];
-  });
+    });
+
+    return unsubscribe;
+  },[]);
 
   return (
     <View style={styles.container}>

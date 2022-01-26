@@ -33,8 +33,6 @@ const Profile = () => {
       .then((doc) => {
         if (doc.exists) {
           setStatus(doc.data().status);
-        } else {
-          console.log("No such document!");
         }
       })
       .catch((error) => {
@@ -130,7 +128,6 @@ const Profile = () => {
 
   //update status
   const updateStatus = () => {
-    // Add a new document in collection "cities"
     usersRef
       .doc(user.uid)
       .set({
@@ -187,12 +184,15 @@ const Profile = () => {
           </ListItem>
         </TouchableHighlight>
         <View style={{ ...styles.accountDrawer, display: display }}>
-          <Text style={styles.formLabels}>Username:</Text>
+          <Text style={styles.formLabels}>
+            Username: <Text style={{color:"red", fontSize:12}}>*cannot be changed for now</Text>
+          </Text>
           <TextInput
             placeholder={user.displayName}
             style={styles.input}
             onChangeText={(e) => setUsername(e)}
-            value={userName}
+            value={user.displayName}
+            editable={false}
           />
           <Text style={styles.formLabels}>New Password:</Text>
           <TextInput
@@ -231,12 +231,13 @@ const Profile = () => {
           </ListItem>
         </TouchableHighlight>
         <View style={{ ...styles.statusContainer, display: displayStatus }}>
-          <Text>Update</Text>
           <TextInput
             multiline
+            placeholder={status}
             numberOfLines={4}
             onChangeText={(e) => setStatusText(e)}
             value={statusText}
+            style={styles.statusTextInput}
           />
           <Button
             onPress={updateStatus}
@@ -253,12 +254,12 @@ export default Profile;
 
 const styles = StyleSheet.create({
   accountDrawer: {
-    backgroundColor: "red",
+    backgroundColor: "white",
     color: "pink",
     padding: 50,
   },
   statusContainer: {
-    backgroundColor: "#9d9d9d",
+    backgroundColor: "white",
     padding: 10,
   },
   camera: {
@@ -270,10 +271,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    paddingVertical: 5,
+    borderBottomColor: "blue",
+    marginBottom: 8,
     marginHorizontal: 10,
-    marginVertical: 5,
     paddingHorizontal: 5,
   },
   lowerBox: {
@@ -299,6 +299,12 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     fontSize: 15,
     fontStyle: "italic",
+  },
+  statusTextInput:{
+    borderBottomWidth:1,
+    borderBottomColor:"blue",
+    textAlign: "center",
+    marginBottom:8
   },
   quotes: {
     fontSize: 25,

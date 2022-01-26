@@ -2,20 +2,30 @@ import React from "react";
 import { StyleSheet, Text, TextInput, Button, View } from "react-native";
 import { Formik } from "formik";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { auth } from "../firebase";
+import { auth, usersRef } from "../firebase";
 
 const Register = () => {
   const sign = ({ email, password, username }) => {
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then((doc) => {
         // Signed in
-        var user = user.userCredential;
-        user.updateProfile({
+        var Loggeduser = doc.userCredential;  
+
+        doc.user.updateProfile({
           displayName: username,
-          photoURL: "https://example.com/jane-q-user/profile.jpg",
+          photoURL: "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1",
         });
-        //
+
+        //create default status text
+      usersRef
+      .doc(doc.user.uid)
+      .set({
+        status: "Just joined chatrooms",
+      }).
+      then()
+      .catch((error)=>console.log("status error:", error));
+       
       })
       .catch((error) => {
         var errorCode = error.code;

@@ -43,8 +43,6 @@ const ChatScreen = ({ route, navigation }) => {
     return unsubscribe;
   },[route]);
 
-  alert("done");
-
   const handleSend = () => {
     Keyboard.dismiss();
     db.collection("messages")

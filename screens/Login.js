@@ -15,11 +15,13 @@ const Login = ({ navigation }) => {
 
   //check for user
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.replace("Chat Rooms");
       }
     });
+
+    return unsubscribe;
   }, []);
 
   function handleSubmit() {
