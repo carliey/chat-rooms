@@ -7,7 +7,7 @@ import {
   Text,
   TouchableHighlight,
   Button,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 import { Avatar, Divider, ListItem } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
@@ -32,12 +32,12 @@ const Profile = () => {
     usersRef
       .doc(user.uid)
       .get()
-      .then(doc => {
+      .then((doc) => {
         if (doc.exists) {
           setStatus(doc.data().status);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error getting document:", error);
       });
   }, []);
@@ -45,9 +45,8 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
-        const {
-          status
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
@@ -61,7 +60,7 @@ const Profile = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
 
     if (!result.cancelled) {
@@ -73,13 +72,13 @@ const Profile = () => {
   };
 
   //create a blob for image
-  const uploadImage = async uri => {
+  const uploadImage = async (uri) => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.onload = function() {
+      xhr.onload = function () {
         resolve(xhr.response);
       };
-      xhr.onerror = function(e) {
+      xhr.onerror = function (e) {
         console.log(e);
         reject(new TypeError("Network request failed"));
       };
@@ -107,15 +106,15 @@ const Profile = () => {
     profilePhotosRef
       .child(timeString)
       .put(blob)
-      .then(snapshot => {
+      .then((snapshot) => {
         console.log("Uploaded a blob or file!");
-        snapshot.ref.getDownloadURL().then(downloadURL => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
           //updating the profile photo
           user
             .updateProfile({ photoURL: downloadURL })
             .then(() => console.log("update success"))
-            .catch(error => console.log(error));
+            .catch((error) => console.log(error));
         });
       });
 
@@ -141,7 +140,7 @@ const Profile = () => {
           setPassword("");
           setConfirmPassword("");
         })
-        .catch(error => {
+        .catch((error) => {
           setPasswordErr(error.message);
         });
     }
@@ -152,14 +151,14 @@ const Profile = () => {
     usersRef
       .doc(user.uid)
       .set({
-        status: statusText
+        status: statusText,
       })
       .then(() => {
         // console.log("Document successfully written!");
         setStatus(statusText);
         setStatusText("");
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error writing document: ", error);
       });
     setDisplayStatus("none");
@@ -171,7 +170,7 @@ const Profile = () => {
           rounded
           size="xlarge"
           source={{
-            uri: image ? image : user.photoURL
+            uri: image ? image : user.photoURL,
           }}
         ></Avatar>
         <AntDesign
@@ -214,21 +213,21 @@ const Profile = () => {
           <TextInput
             placeholder={user.displayName}
             style={styles.input}
-            onChangeText={e => setUsername(e)}
+            onChangeText={(e) => setUsername(e)}
             value={user.displayName}
             editable={false}
           />
           <Text style={styles.formLabels}>New Password:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={e => setPassword(e)}
+            onChangeText={(e) => setPassword(e)}
             value={password}
             secureTextEntry
           />
           <Text style={styles.formLabels}>Confirm New Password</Text>
           <TextInput
             style={styles.input}
-            onChangeText={e => setConfirmPassword(e)}
+            onChangeText={(e) => setConfirmPassword(e)}
             value={confirmPassword}
             secureTextEntry
           />
@@ -260,7 +259,7 @@ const Profile = () => {
             multiline
             placeholder={status}
             numberOfLines={4}
-            onChangeText={e => setStatusText(e)}
+            onChangeText={(e) => setStatusText(e)}
             value={statusText}
             style={styles.statusTextInput}
           />
@@ -281,17 +280,17 @@ const styles = StyleSheet.create({
   accountDrawer: {
     backgroundColor: "white",
     color: "pink",
-    padding: 50
+    padding: 50,
   },
   statusContainer: {
     backgroundColor: "white",
-    padding: 10
+    padding: 10,
   },
   camera: {
-    marginRight: 10
+    marginRight: 10,
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   input: {
     backgroundColor: "white",
@@ -299,10 +298,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "blue",
     marginBottom: 8,
     marginHorizontal: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   lowerBox: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   upperBox: {
     backgroundColor: "white",
@@ -311,30 +310,30 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
     paddingVertical: 51,
     height: "40%",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   statusTextContainer: {
     backgroundColor: "white",
     color: "black",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   statusText: {
     textAlign: "center",
     paddingBottom: 20,
     fontSize: 15,
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   statusTextInput: {
     borderBottomWidth: 1,
     borderBottomColor: "blue",
     textAlign: "center",
-    marginBottom: 8
+    marginBottom: 8,
   },
   quotes: {
     fontSize: 25,
     fontWeight: "500",
     fontStyle: "italic",
-    color: "grey"
-  }
+    color: "grey",
+  },
 });

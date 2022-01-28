@@ -8,7 +8,7 @@ const ChatListItem = ({ navigation, keyword }) => {
 
   useEffect(() => {
     //to implement the searching functionality
-    if(keyword){
+    if (keyword) {
       db.collection("rooms")
         .where("title", "==", keyword)
         .get()
@@ -16,11 +16,10 @@ const ChatListItem = ({ navigation, keyword }) => {
           setChatrooms(snapshot.docs.map((item) => item.data()));
         })
         .catch((error) => console.log(error));
-    } else{
-      db.collection("rooms")
-      .onSnapshot((querySnapshot)=>{
+    } else {
+      db.collection("rooms").onSnapshot((querySnapshot) => {
         setChatrooms(querySnapshot.docs.map((item) => item.data()));
-      })
+      });
     }
   }, []);
 
@@ -35,9 +34,7 @@ const ChatListItem = ({ navigation, keyword }) => {
           <Avatar rounded source={{ uri: l.displayPhoto }} />
           <ListItem.Content>
             <ListItem.Title>{l.title}</ListItem.Title>
-            <ListItem.Subtitle>
-              Created By: {l.creatorName}
-            </ListItem.Subtitle>
+            <ListItem.Subtitle>Created By: {l.creatorName}</ListItem.Subtitle>
           </ListItem.Content>
           <View style={styles.badgeContainer}>
             {/* <Badge value="99+" status="error" /> */}

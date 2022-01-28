@@ -6,7 +6,7 @@ import {
   Text,
   TextInput,
   View,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { auth, db, imagesRef } from "../firebase";
@@ -27,7 +27,7 @@ const CreateChat = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
     if (!result.cancelled) {
       //handle image picked
@@ -36,14 +36,14 @@ const CreateChat = ({ navigation }) => {
     }
   };
 
-  const uploadImage = async uri => {
+  const uploadImage = async (uri) => {
     const blob = await new Promise((resolve, reject) => {
       setLoading(true);
       const xhr = new XMLHttpRequest();
-      xhr.onload = function() {
+      xhr.onload = function () {
         resolve(xhr.response);
       };
-      xhr.onerror = function(e) {
+      xhr.onerror = function (e) {
         reject(new TypeError("Network request failed"));
       };
       xhr.responseType = "blob";
@@ -63,8 +63,8 @@ const CreateChat = ({ navigation }) => {
     imagesRef
       .child(imageName)
       .put(blob)
-      .then(snapshot => {
-        snapshot.ref.getDownloadURL().then(downloadURL => {
+      .then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
           //console.log("file available at download", downloadURL);
           setImage(downloadURL);
           setLoading(false);
@@ -76,34 +76,25 @@ const CreateChat = ({ navigation }) => {
     try {
       //check firestore for existing rooms
       setSpinner(true);
-      const doc = await db
-        .collection("rooms")
-        .doc(chatName)
-        .get();
+      const doc = await db.collection("rooms").doc(chatName).get();
       if (!doc.exists) {
         //check whether an image is provided
         if (image) {
-          const addSuccess = await db
-            .collection("rooms")
-            .doc(chatName)
-            .set({
-              title: chatName.toUpperCase(),
-              about: about,
-              creatorId: auth.currentUser.uid,
-              creatorName: auth.currentUser.displayName,
-              displayPhoto: image
-            });
+          const addSuccess = await db.collection("rooms").doc(chatName).set({
+            title: chatName.toUpperCase(),
+            about: about,
+            creatorId: auth.currentUser.uid,
+            creatorName: auth.currentUser.displayName,
+            displayPhoto: image,
+          });
           navigation.replace("Chat Rooms");
         } else {
-          const addSuccess = await db
-            .collection("rooms")
-            .doc(chatName)
-            .set({
-              title: chatName.toUpperCase(),
-              about: about,
-              creatorId: auth.currentUser.uid,
-              creatorName: auth.currentUser.displayName
-            });
+          const addSuccess = await db.collection("rooms").doc(chatName).set({
+            title: chatName.toUpperCase(),
+            about: about,
+            creatorId: auth.currentUser.uid,
+            creatorName: auth.currentUser.displayName,
+          });
           navigation.replace("Chat Rooms");
         }
       } else {
@@ -131,12 +122,12 @@ const CreateChat = ({ navigation }) => {
         <TextInput
           placeholder="name of chat"
           style={styles.input}
-          onChangeText={text => setChatName(text)}
+          onChangeText={(text) => setChatName(text)}
         />
         <TextInput
           placeholder="About..."
           style={styles.input}
-          onChangeText={text => setAbout(text)}
+          onChangeText={(text) => setAbout(text)}
         />
         <MaterialIcons
           name="add-a-photo"
@@ -162,20 +153,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   spinnerTextStyle: {
-    color: "#FFF"
+    color: "#FFF",
   },
   input: {
     borderBottomWidth: 1,
     borderBottomColor: "blue",
     paddingVertical: 8,
     marginVertical: 15,
-    width: 300
+    width: 300,
   },
   imageUpload: {
     alignSelf: "center",
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
 });

@@ -11,7 +11,7 @@ const ChatRooms = ({ navigation }) => {
 
   useEffect(() => {
     //check login status
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         navigation.replace("Login");
       }
@@ -23,7 +23,7 @@ const ChatRooms = ({ navigation }) => {
   useLayoutEffect(() => {
     //set header options
     const unsubscribe = navigation.setOptions({
-      headerTitle: () => <CustomHeader navigation={navigation} />
+      headerTitle: () => <CustomHeader navigation={navigation} />,
     });
 
     return unsubscribe;
@@ -60,6 +60,6 @@ export default ChatRooms;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1
-  }
+    flex: 1,
+  },
 });

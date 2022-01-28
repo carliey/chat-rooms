@@ -5,14 +5,15 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, usersRef } from "../firebase";
 
 const Register = () => {
-  const defualtPhoto = "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1";
+  const defualtPhoto =
+    "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1";
 
   const sign = ({ email, password, username }) => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((doc) => {
         // Signed in
-        var Loggeduser = doc.userCredential;  
+        var Loggeduser = doc.userCredential;
 
         doc.user.updateProfile({
           displayName: username,
@@ -20,14 +21,13 @@ const Register = () => {
         });
 
         //create default status text
-      usersRef
-      .doc(doc.user.uid)
-      .set({
-        status: "Just joined chatrooms",
-      }).
-      then()
-      .catch((error)=>console.log("status error:", error));
-       
+        usersRef
+          .doc(doc.user.uid)
+          .set({
+            status: "Just joined chatrooms",
+          })
+          .then()
+          .catch((error) => console.log("status error:", error));
       })
       .catch((error) => {
         var errorCode = error.code;

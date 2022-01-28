@@ -8,7 +8,7 @@ import {
   Keyboard,
   Modal,
   Pressable,
-  Image
+  Image,
 } from "react-native";
 import CustomChatHeader from "./CustomChatHeader";
 import { Ionicons } from "@expo/vector-icons";
@@ -36,7 +36,7 @@ const ChatScreen = ({ route, navigation }) => {
           totalMessages={totalMessages}
           setModalVisible={setModalVisible}
         />
-      )
+      ),
     });
   }, [navigation, messages]);
 
@@ -46,11 +46,11 @@ const ChatScreen = ({ route, navigation }) => {
       .collection("messages")
       .where("room", "==", room.title)
       .orderBy("timestamp")
-      .onSnapshot(querySnapshot => {
+      .onSnapshot((querySnapshot) => {
         setMessages(
-          querySnapshot.docs.map(doc => ({
+          querySnapshot.docs.map((doc) => ({
             id: doc.id,
-            data: doc.data({ serverTimestamps: "estimate" })
+            data: doc.data({ serverTimestamps: "estimate" }),
           }))
         );
       });
@@ -67,10 +67,10 @@ const ChatScreen = ({ route, navigation }) => {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         displayPhoto: auth.currentUser.photoURL,
         room: room.title,
-        userId: auth.currentUser.uid
+        userId: auth.currentUser.uid,
       })
       .then()
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     setText("");
@@ -120,7 +120,7 @@ const ChatScreen = ({ route, navigation }) => {
           scrollviewRef.current.scrollToEnd({ animated: true })
         }
       >
-        {messages.map(message =>
+        {messages.map((message) =>
           message.data.email === auth.currentUser.email ? (
             <View key={message.id} style={styles.senderContainer}>
               <View style={styles.senderMessageContainer}>
@@ -171,7 +171,7 @@ const ChatScreen = ({ route, navigation }) => {
       <View style={styles.footer}>
         <TextInput
           placeholder="Enter message"
-          onChangeText={text => setText(text)}
+          onChangeText={(text) => setText(text)}
           style={styles.input}
           onSubmitEditing={handleSend}
           value={text}
@@ -187,12 +187,12 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   footer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10
+    padding: 10,
   },
   input: {
     flex: 1,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginHorizontal: 10,
     padding: 10,
-    color: "grey"
+    color: "grey",
   },
   senderContainer: {
     alignSelf: "flex-end",
@@ -208,23 +208,23 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     alignContent: "flex-end",
     marginRight: 5,
-    marginVertical: 10
+    marginVertical: 10,
   },
   senderMessageContainer: {
     backgroundColor: "#ececec",
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 30,
-    padding: 10
+    padding: 10,
   },
   senderUsername: {
     color: "red",
     fontWeight: "400",
-    fontSize: 14
+    fontSize: 14,
   },
   senderMessageTime: {
     color: "grey",
     fontWeight: "200",
-    fontSize: 10
+    fontSize: 10,
   },
   //receiver message box
   receiverContainer: {
@@ -233,32 +233,32 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     alignContent: "flex-end",
     marginLeft: 10,
-    marginVertical: 10
+    marginVertical: 10,
   },
   receiverMessageContainer: {
     backgroundColor: "#ececec",
     borderBottomRightRadius: 10,
     borderTopLeftRadius: 30,
-    padding: 10
+    padding: 10,
   },
   receiverUsername: {
     color: "red",
     fontWeight: "400",
     fontSize: 14,
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
   receiverMessageTime: {
     color: "grey",
     fontWeight: "200",
     fontSize: 10,
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
 
   // modal styles
   centeredView: {
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: "center",
   },
   modalView: {
     margin: 0,
@@ -267,27 +267,27 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   modalImage: {
     borderWidth: 1,
     height: 300,
-    width: 390
+    width: 390,
   },
   button: {
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonClose: {
-    backgroundColor: "#2196F3"
+    backgroundColor: "#2196F3",
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

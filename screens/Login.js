@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   View,
-  Text
+  Text,
 } from "react-native";
 import { auth } from "../firebase";
 
@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
         // ...
       })
       .catch((error) => {
-        setErrMessage(error.message)
+        setErrMessage(error.message);
       });
   }
 
@@ -54,16 +54,25 @@ const Login = ({ navigation }) => {
         onChangeText={(val) => setpassword(val)}
         secureTextEntry
       />
-      {errMessage &&
-      <>
-        <Text>{errMessage}</Text>
-        <TouchableOpacity onPress={()=>navigation.navigate("sendResetPassword")}>
-            <Text style={{textDecorationLine:"underline", color:'maroon', fontWeight:"bold"}}>Reset Password</Text>
-        </TouchableOpacity> 
-      </>
-      }
-        
-      
+      {errMessage && (
+        <>
+          <Text>{errMessage}</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("sendResetPassword")}
+          >
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                color: "maroon",
+                fontWeight: "bold",
+              }}
+            >
+              Reset Password
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+
       <TouchableOpacity style={styles.button}>
         <Button title="Sign in" onPress={handleSubmit} />
       </TouchableOpacity>

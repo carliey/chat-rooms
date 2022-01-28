@@ -5,11 +5,11 @@ import { Avatar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../firebase";
 
-
 const CustomHeader = ({ navigation }) => {
   const [openSearch, setOpenSearch] = useState(false); // searchbar
   const [searchKeyword, setSearchKeyword] = useState("");
-  const defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1";
+  const defaultPhoto =
+    "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1";
 
   const logout = () => {
     auth
@@ -20,13 +20,12 @@ const CustomHeader = ({ navigation }) => {
       .catch((error) => {
         alert(error);
       });
-      //navigation.replace("Login")
-
+    //navigation.replace("Login")
   };
 
-  const handleSearch =()=>{
+  const handleSearch = () => {
     navigation.navigate("search-result", searchKeyword);
-  }
+  };
 
   //conditional return of searchbar or header
   return openSearch ? (
@@ -57,7 +56,7 @@ const CustomHeader = ({ navigation }) => {
       <Avatar
         rounded
         source={{
-          uri: auth.currentUser? auth.currentUser.photoURL:defaultPhoto,
+          uri: auth.currentUser ? auth.currentUser.photoURL : defaultPhoto,
         }}
         onPress={() => navigation.navigate("Profile")}
       />
