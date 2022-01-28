@@ -11,23 +11,23 @@ const ChatRooms = ({ navigation }) => {
 
   useEffect(() => {
     //check login status
-   const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) {
         navigation.replace("Login");
       }
       setUser(user);
     });
-    return unsubscribe
+    return unsubscribe;
   }, []);
 
   useLayoutEffect(() => {
     //set header options
     const unsubscribe = navigation.setOptions({
-      headerTitle: () => <CustomHeader navigation={navigation} />,
+      headerTitle: () => <CustomHeader navigation={navigation} />
     });
 
     return unsubscribe;
-  },[]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -60,6 +60,6 @@ export default ChatRooms;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1,
-  },
+    flex: 1
+  }
 });

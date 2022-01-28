@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Avatar, Badge, ListItem } from "react-native-elements/";
 import { db } from "../firebase";
 
@@ -25,7 +25,7 @@ const ChatListItem = ({ navigation, keyword }) => {
   }, []);
 
   return chatrooms.length > 0 ? (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {chatrooms.map((l, i) => (
         <ListItem
           key={i}
@@ -44,7 +44,7 @@ const ChatListItem = ({ navigation, keyword }) => {
           </View>
         </ListItem>
       ))}
-    </View>
+    </ScrollView>
   ) : (
     <View style={styles.loading}>
       <Text>Loading...</Text>

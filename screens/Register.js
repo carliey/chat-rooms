@@ -5,6 +5,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, usersRef } from "../firebase";
 
 const Register = () => {
+  const defualtPhoto = "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1";
+
   const sign = ({ email, password, username }) => {
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -14,7 +16,7 @@ const Register = () => {
 
         doc.user.updateProfile({
           displayName: username,
-          photoURL: "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/user.png?alt=media&token=5eed8ee5-603f-4a0b-835d-cf269f3162c1",
+          photoURL: defualtPhoto,
         });
 
         //create default status text

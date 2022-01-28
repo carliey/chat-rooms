@@ -22,8 +22,8 @@ const StackNav = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="chat" component={ChatScreen} />
         <Stack.Screen name="Create Chat" component={CreateChat} />
-        <Stack.Screen name="search-result" component={SearchResult}/>
-        <Stack.Screen name="sendResetPassword" component={PasswordResetEmail}/>
+        <Stack.Screen name="search-result" component={SearchResult} />
+        <Stack.Screen name="sendResetPassword" component={PasswordResetEmail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
