@@ -73,15 +73,16 @@ const CreateChat = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
+    const chatname = chatName.toUpperCase();
     try {
       //check firestore for existing rooms
       setSpinner(true);
-      const doc = await db.collection("rooms").doc(chatName).get();
+      const doc = await db.collection("rooms").doc(chatname).get();
       if (!doc.exists) {
         //check whether an image is provided
         if (image) {
-          const addSuccess = await db.collection("rooms").doc(chatName).set({
-            title: chatName.toUpperCase(),
+          const addSuccess = await db.collection("rooms").doc(chatname).set({
+            title: chatname,
             about: about,
             creatorId: auth.currentUser.uid,
             creatorName: auth.currentUser.displayName,
@@ -89,11 +90,13 @@ const CreateChat = ({ navigation }) => {
           });
           navigation.replace("Chat Rooms");
         } else {
-          const addSuccess = await db.collection("rooms").doc(chatName).set({
-            title: chatName.toUpperCase(),
+          const addSuccess = await db.collection("rooms").doc(chatname).set({
+            title: chatname,
             about: about,
             creatorId: auth.currentUser.uid,
             creatorName: auth.currentUser.displayName,
+            displayPhoto:
+              "https://firebasestorage.googleapis.com/v0/b/chat-rooms-cd657.appspot.com/o/defaults%2Fimg_524654.png?alt=media&token=8c1a3d54-4dbd-49ce-8570-ee1601e06e23",
           });
           navigation.replace("Chat Rooms");
         }
@@ -112,7 +115,7 @@ const CreateChat = ({ navigation }) => {
       {spinner && (
         <Spinner
           visible={spinner}
-          textContent={"Loading..."}
+          textContent={"please wait..."}
           textStyle={styles.spinnerTextStyle}
         />
       )}

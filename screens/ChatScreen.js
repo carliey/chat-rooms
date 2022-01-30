@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
 import CustomChatHeader from "./CustomChatHeader";
 import { Ionicons } from "@expo/vector-icons";
@@ -76,6 +77,29 @@ const ChatScreen = ({ route, navigation }) => {
     setText("");
   };
 
+  const handleDelete = () => {
+    db.collection("rooms")
+      .doc(room.title.toUpperCase())
+      .delete()
+      .then(() => {
+        navigation.replace("Chat Rooms");
+      })
+      .catch((error) => {
+        console.error("error deleting doc:", error);
+      });
+  };
+
+  const deleteAlert = () => {
+    Alert.alert("Warning", "Are you sure you want to delete this room?", [
+      {
+        text: "Cancel",
+        onPress: () => Alert.alert("cancelled"),
+        style: "cancel",
+      },
+      { text: "yes", onPress: () => handleDelete() },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       {/* modal code */}
@@ -94,15 +118,24 @@ const ChatScreen = ({ route, navigation }) => {
               source={{ uri: room.displayPhoto }}
             ></Image>
             <View style={styles.modalItems}>
-              <Text>{room.title}</Text>
-              <Text>Creator:</Text>
-              <Text>
+              <Text style={styles.modalTitle}>{room.title}</Text>
+              <Divider />
+              <Text style={styles.modalLabels}>Creator:</Text>
+              <Text style={styles.modalText}>
                 {room.creatorName}
                 {auth.currentUser.displayName == room.creatorName && "(You)"}
               </Text>
-              <Text>About Room:</Text>
-              <Text>{room.about}</Text>
+              <Divider />
+              <Text style={styles.modalLabels}>About Room:</Text>
+              <Text style={styles.modalText}>{room.about}</Text>
             </View>
+            <Divider />
+
+            {auth.currentUser.displayName == room.creatorName && (
+              <Pressable style={styles.delete} onPress={() => deleteAlert()}>
+                <Text style={{ color: "white" }}>Delete Room</Text>
+              </Pressable>
+            )}
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -262,7 +295,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 0,
-    backgroundColor: "white",
+    backgroundColor: "#ebebeb",
     padding: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -289,5 +322,34 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  modalTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    includeFontPadding: true,
+    fontFamily: "Roboto",
+    color: "#61514f",
+    padding: 5,
+  },
+  modalLabels: {
+    color: "#61514f",
+    fontSize: 15,
+    fontWeight: "100",
+  },
+  modalText: {
+    color: "#61514f",
+    fontSize: 20,
+    fontWeight: "100",
+    paddingBottom: 5,
+    paddingLeft: 5,
+  },
+  delete: {
+    backgroundColor: "red",
+    width: 100,
+    alignItems: "center",
+    alignSelf: "center",
+    padding: 10,
+    margin: 10,
+    elevation: 5,
   },
 });

@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { Avatar, ListItem } from "react-native-elements";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import { Avatar } from "react-native-elements";
 
 const CustomChatHeader = ({ room, totalMessages, setModalVisible }) => {
   return (

@@ -8,6 +8,8 @@ import {
   TouchableHighlight,
   Button,
   ToastAndroid,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { Avatar, Divider, ListItem } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
@@ -164,113 +166,115 @@ const Profile = () => {
     setDisplayStatus("none");
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.upperBox}>
-        <Avatar
-          rounded
-          size="xlarge"
-          source={{
-            uri: image ? image : user.photoURL,
-          }}
-        ></Avatar>
-        <AntDesign
-          name="camerao"
-          onPress={pickImage}
-          style={styles.camera}
-          size={24}
-          color="black"
-        />
-      </View>
-      <View style={styles.statusTextContainer}>
-        <Text style={styles.quotes}>"</Text>
-        <Text style={styles.statusText}>{status}</Text>
-        <Text style={styles.quotes}>"</Text>
-      </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.upperBox}>
+          <Avatar
+            rounded
+            size="xlarge"
+            source={{
+              uri: image ? image : user.photoURL,
+            }}
+          ></Avatar>
+          <AntDesign
+            name="camerao"
+            onPress={pickImage}
+            style={styles.camera}
+            size={24}
+            color="black"
+          />
+        </View>
+        <View style={styles.statusTextContainer}>
+          <Text style={styles.quotes}>"</Text>
+          <Text style={styles.statusText}>{status}</Text>
+          <Text style={styles.quotes}>"</Text>
+        </View>
 
-      <Divider orientation="horizontal" subHeaderStyle={{ color: "blue" }} />
-      <View style={styles.lowerBox}>
-        <TouchableHighlight
-          activeOpacity={0.6}
-          underlayColor="#DDDDDD"
-          onPress={() =>
-            display == "none" ? setDisplay("flex") : setDisplay("none")
-          }
-        >
-          <ListItem key={0} bottomDivider>
-            <ListItem.Content>
-              <ListItem.Title>Account</ListItem.Title>
-              <ListItem.Subtitle>Change username, password</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        </TouchableHighlight>
-        <View style={{ ...styles.accountDrawer, display: display }}>
-          <Text style={styles.formLabels}>
-            Username:{" "}
-            <Text style={{ color: "red", fontSize: 12 }}>
-              *cannot be changed for now
+        <Divider orientation="horizontal" subHeaderStyle={{ color: "blue" }} />
+        <View style={styles.lowerBox}>
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
+            onPress={() =>
+              display == "none" ? setDisplay("flex") : setDisplay("none")
+            }
+          >
+            <ListItem key={0} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>Account</ListItem.Title>
+                <ListItem.Subtitle>Change username, password</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          </TouchableHighlight>
+          <View style={{ ...styles.accountDrawer, display: display }}>
+            <Text style={styles.formLabels}>
+              Username:{" "}
+              <Text style={{ color: "red", fontSize: 12 }}>
+                *cannot be changed for now
+              </Text>
             </Text>
-          </Text>
-          <TextInput
-            placeholder={user.displayName}
-            style={styles.input}
-            onChangeText={(e) => setUsername(e)}
-            value={user.displayName}
-            editable={false}
-          />
-          <Text style={styles.formLabels}>New Password:</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(e) => setPassword(e)}
-            value={password}
-            secureTextEntry
-          />
-          <Text style={styles.formLabels}>Confirm New Password</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(e) => setConfirmPassword(e)}
-            value={confirmPassword}
-            secureTextEntry
-          />
-          <Text style={{ fontSize: 12, color: "red" }}>{passwordErr}</Text>
-          <Button
-            onPress={updateProfile}
-            style={styles.button}
-            title="Save Changes"
-          />
-        </View>
-        <TouchableHighlight
-          activeOpacity={0.6}
-          underlayColor="#DDDDDD"
-          onPress={() =>
-            displayStatus == "none"
-              ? setDisplayStatus("flex")
-              : setDisplayStatus("none")
-          }
-        >
-          <ListItem key={1} bottomDivider>
-            <ListItem.Content>
-              <ListItem.Title>Status</ListItem.Title>
-              <ListItem.Subtitle>Update Status</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        </TouchableHighlight>
-        <View style={{ ...styles.statusContainer, display: displayStatus }}>
-          <TextInput
-            multiline
-            placeholder={status}
-            numberOfLines={4}
-            onChangeText={(e) => setStatusText(e)}
-            value={statusText}
-            style={styles.statusTextInput}
-          />
-          <Button
-            onPress={updateStatus}
-            style={styles.button}
-            title="Save Changes"
-          />
+            <TextInput
+              placeholder={user.displayName}
+              style={styles.input}
+              onChangeText={(e) => setUsername(e)}
+              value={user.displayName}
+              editable={false}
+            />
+            <Text style={styles.formLabels}>New Password:</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(e) => setPassword(e)}
+              value={password}
+              secureTextEntry
+            />
+            <Text style={styles.formLabels}>Confirm New Password</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(e) => setConfirmPassword(e)}
+              value={confirmPassword}
+              secureTextEntry
+            />
+            <Text style={{ fontSize: 12, color: "red" }}>{passwordErr}</Text>
+            <Button
+              onPress={updateProfile}
+              style={styles.button}
+              title="Save Changes"
+            />
+          </View>
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
+            onPress={() =>
+              displayStatus == "none"
+                ? setDisplayStatus("flex")
+                : setDisplayStatus("none")
+            }
+          >
+            <ListItem key={1} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>Status</ListItem.Title>
+                <ListItem.Subtitle>Update Status</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          </TouchableHighlight>
+          <View style={{ ...styles.statusContainer, display: displayStatus }}>
+            <TextInput
+              multiline
+              placeholder={status}
+              numberOfLines={4}
+              onChangeText={(e) => setStatusText(e)}
+              value={statusText}
+              style={styles.statusTextInput}
+            />
+            <Button
+              onPress={updateStatus}
+              style={styles.button}
+              title="Save Changes"
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

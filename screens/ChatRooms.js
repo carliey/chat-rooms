@@ -32,23 +32,19 @@ const ChatRooms = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ChatListItem navigation={navigation} />
-
       <SpeedDial
         isOpen={open}
         icon={{ name: "add", color: "white" }}
         openIcon={{ name: "close", color: "#fff" }}
         onOpen={() => setOpen(!open)}
         onClose={() => setOpen(!open)}
+        color="#2196F3"
       >
         <SpeedDial.Action
           icon={{ name: "add", color: "#fff" }}
           title="Create Chat"
           onPress={() => navigation.navigate("Create Chat")}
-        />
-        <SpeedDial.Action
-          icon={{ name: "delete", color: "#fff" }}
-          title="Delete"
-          onPress={() => console.log("Delete Something")}
+          color="#56bf4d"
         />
       </SpeedDial>
     </View>

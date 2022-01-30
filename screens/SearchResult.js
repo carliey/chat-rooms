@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import ChatListItem from "./ChatListItem";
-import { View, Text } from "react-native";
 
 const SearchResult = ({ navigation, route }) => {
   const keyword = route.params;
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: `search-result: ${keyword}`,
+    });
+  }, []);
+
   return (
     <>
-      <View>
-        <Text>keyword:{keyword}</Text>
-        <ChatListItem keyword={keyword} navigation={navigation} />
-      </View>
+      <ChatListItem keyword={keyword} navigation={navigation} />
     </>
   );
 };

@@ -42,6 +42,7 @@ const CustomHeader = ({ navigation }) => {
         onChangeText={setSearchKeyword}
         onSubmitEditing={handleSearch}
         value={searchKeyword}
+        autoFocus={true}
       ></TextInput>
       <Ionicons
         style={styles.cancel}
