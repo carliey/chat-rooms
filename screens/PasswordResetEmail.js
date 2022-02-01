@@ -5,6 +5,7 @@ import { auth } from "../firebase";
 const PasswordResetEmail = ({ navigation }) => {
   const [input, setInput] = useState("");
   const [emailSent, setEmailSenT] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const sendEmail = () => {
     auth
@@ -17,8 +18,7 @@ const PasswordResetEmail = ({ navigation }) => {
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ..
-        console.log(errorMessage);
+        setErrorMessage(errorMessage);
       });
   };
   return !emailSent ? (
@@ -30,6 +30,9 @@ const PasswordResetEmail = ({ navigation }) => {
         style={styles.input}
         value={input}
       />
+      {errorMessage != "" && (
+        <Text style={{ color: "red", paddingBottom: 5 }}>{errorMessage}</Text>
+      )}
       <Button onPress={() => sendEmail()} title="Send Email" />
     </View>
   ) : (
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   input: {
-    borderBottomColor: "blue",
+    borderBottomColor: "#7db1fa",
     borderBottomWidth: 1,
     padding: 10,
     marginVertical: 10,

@@ -56,7 +56,7 @@ const Login = ({ navigation }) => {
       />
       {errMessage && (
         <>
-          <Text>{errMessage}</Text>
+          <Text style={styles.errorMessage}>{errMessage}</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate("sendResetPassword")}
           >
@@ -65,6 +65,7 @@ const Login = ({ navigation }) => {
                 textDecorationLine: "underline",
                 color: "maroon",
                 fontWeight: "bold",
+                padding: 5,
               }}
             >
               Reset Password
@@ -110,9 +111,12 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "blue",
+    borderBottomColor: "#7db1fa",
     paddingVertical: 8,
     marginBottom: 10,
     width: 300,
+  },
+  errorMessage: {
+    color: "red",
   },
 });

@@ -28,6 +28,7 @@ const Profile = () => {
   const [display, setDisplay] = useState("none");
   const [displayStatus, setDisplayStatus] = useState("none");
   const [passwordErr, setPasswordErr] = useState("");
+  const [statusErr, setStatusErr] = useState("");
 
   useEffect(() => {
     // get status text from database
@@ -150,20 +151,24 @@ const Profile = () => {
 
   //update status
   const updateStatus = () => {
-    usersRef
-      .doc(user.uid)
-      .set({
-        status: statusText,
-      })
-      .then(() => {
-        // console.log("Document successfully written!");
-        setStatus(statusText);
-        setStatusText("");
-      })
-      .catch((error) => {
-        console.error("Error writing document: ", error);
-      });
-    setDisplayStatus("none");
+    if (statusText == "") {
+      setStatusErr("Status cannot be empty");
+    } else {
+      usersRef
+        .doc(user.uid)
+        .set({
+          status: statusText,
+        })
+        .then(() => {
+          // console.log("Document successfully written!");
+          setStatus(statusText);
+          setStatusText("");
+        })
+        .catch((error) => {
+          setStatusErr("Error writing document: " + error.message);
+        });
+      setDisplayStatus("none");
+    }
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -199,7 +204,7 @@ const Profile = () => {
               display == "none" ? setDisplay("flex") : setDisplay("none")
             }
           >
-            <ListItem key={0} bottomDivider>
+            <ListItem key={0} bottomDivider style={{ elevation: 5 }}>
               <ListItem.Content>
                 <ListItem.Title>Account</ListItem.Title>
                 <ListItem.Subtitle>Change username, password</ListItem.Subtitle>
@@ -234,7 +239,7 @@ const Profile = () => {
               value={confirmPassword}
               secureTextEntry
             />
-            <Text style={{ fontSize: 12, color: "red" }}>{passwordErr}</Text>
+            <Text style={styles.errorText}>{passwordErr}</Text>
             <Button
               onPress={updateProfile}
               style={styles.button}
@@ -266,6 +271,7 @@ const Profile = () => {
               value={statusText}
               style={styles.statusTextInput}
             />
+            <Text style={styles.errorText}>{statusErr}</Text>
             <Button
               onPress={updateStatus}
               style={styles.button}
@@ -282,12 +288,12 @@ export default Profile;
 
 const styles = StyleSheet.create({
   accountDrawer: {
-    backgroundColor: "white",
+    backgroundColor: "#f0eded",
     color: "pink",
     padding: 50,
   },
   statusContainer: {
-    backgroundColor: "white",
+    backgroundColor: "#f0eded",
     padding: 10,
   },
   camera: {
@@ -295,14 +301,23 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    alignContent: "space-between",
+    justifyContent: "space-around",
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#f0eded",
     borderBottomWidth: 1,
-    borderBottomColor: "blue",
+    borderBottomColor: "#7db1fa",
     marginBottom: 8,
     marginHorizontal: 10,
     paddingHorizontal: 5,
+  },
+  errorText: {
+    fontSize: 12,
+    color: "red",
+    paddingBottom: 5,
   },
   lowerBox: {
     flexGrow: 1,
@@ -330,7 +345,7 @@ const styles = StyleSheet.create({
   },
   statusTextInput: {
     borderBottomWidth: 1,
-    borderBottomColor: "blue",
+    borderBottomColor: "#7db1fa",
     textAlign: "center",
     marginBottom: 8,
   },

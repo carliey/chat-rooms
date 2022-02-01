@@ -16,17 +16,21 @@ import { Ionicons } from "@expo/vector-icons";
 import { auth, db } from "../firebase";
 import { Avatar, Divider } from "react-native-elements";
 import firebase from "firebase/app";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 
 const ChatScreen = ({ route, navigation }) => {
   const room = route.params;
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   const totalMessages =
     messages.length > 0
       ? messages.length + " messages"
       : messages.length + " message";
   const scrollviewRef = useRef();
+
+  //const [lastMessage, setLastMessage] = useState();
 
   useLayoutEffect(() => {
     // set header options
@@ -58,6 +62,10 @@ const ChatScreen = ({ route, navigation }) => {
     return unsubscribe;
   }, [route]);
 
+  // useEffect(() => {
+  //   setLastMessage(messages[messages.length - 1]);
+  // }, [messages]);
+
   const handleSend = () => {
     Keyboard.dismiss();
     db.collection("messages")
@@ -78,14 +86,17 @@ const ChatScreen = ({ route, navigation }) => {
   };
 
   const handleDelete = () => {
+    setSpinner(true);
     db.collection("rooms")
       .doc(room.title.toUpperCase())
       .delete()
       .then(() => {
         navigation.replace("Chat Rooms");
+        setSpinner(false);
       })
       .catch((error) => {
         console.error("error deleting doc:", error);
+        setSpinner(false);
       });
   };
 
@@ -102,6 +113,14 @@ const ChatScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {spinner && (
+        <Spinner
+          visible={spinner}
+          textContent={"please wait..."}
+          textStyle={{ color: "white" }}
+        />
+      )}
+
       {/* modal code */}
       <Modal
         animationType=""
@@ -119,17 +138,14 @@ const ChatScreen = ({ route, navigation }) => {
             ></Image>
             <View style={styles.modalItems}>
               <Text style={styles.modalTitle}>{room.title}</Text>
-              <Divider />
               <Text style={styles.modalLabels}>Creator:</Text>
               <Text style={styles.modalText}>
                 {room.creatorName}
                 {auth.currentUser.displayName == room.creatorName && "(You)"}
               </Text>
-              <Divider />
               <Text style={styles.modalLabels}>About Room:</Text>
               <Text style={styles.modalText}>{room.about}</Text>
             </View>
-            <Divider />
 
             {auth.currentUser.displayName == room.creatorName && (
               <Pressable style={styles.delete} onPress={() => deleteAlert()}>
@@ -295,7 +311,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 0,
-    backgroundColor: "#ebebeb",
+    backgroundColor: "#cfcfcf",
     padding: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -328,20 +344,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     includeFontPadding: true,
     fontFamily: "Roboto",
-    color: "#61514f",
-    padding: 5,
+    color: "#3b3838",
+    padding: 10,
+    alignSelf: "center",
   },
   modalLabels: {
-    color: "#61514f",
+    color: "#3b3838",
     fontSize: 15,
     fontWeight: "100",
+    alignSelf: "center",
+    paddingTop: 10,
+    paddingBottom: 5,
   },
   modalText: {
-    color: "#61514f",
+    color: "#3b3838",
     fontSize: 20,
     fontWeight: "100",
     paddingBottom: 5,
     paddingLeft: 5,
+    alignSelf: "center",
   },
   delete: {
     backgroundColor: "red",
